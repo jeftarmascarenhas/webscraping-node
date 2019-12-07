@@ -4,13 +4,25 @@
   "description": "webcrapping",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "source .env && babel index.js -d dist",
+    "start": "npm run build && nodemon dist/index.js",
+    "serve": "source .env && node dist/index.js",
+    "test": "source .env && mocha --require @babel/register"
   },
   "author": "Jeftar Mascarenhas (https://jeftar.com.br/)",
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "cli-table": "^0.3.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.5",
+    "@babel/register": "^7.7.4",
+    "mocha": "^6.2.2",
+    "nodemon": "^2.0.1"
   }
 }
