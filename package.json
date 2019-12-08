@@ -4,10 +4,10 @@
   "description": "webcrapping",
   "main": "index.js",
   "scripts": {
-    "build": "source .env && babel index.js -d dist",
-    "start": "npm run build && nodemon dist/index.js",
+    "build": "babel index.js -d dist",
+    "start": "nodemon --exec babel-node index.js",
     "serve": "source .env && node dist/index.js",
-    "test": "source .env && mocha --require @babel/register"
+    "test": "mocha --require @babel/register"
   },
   "author": "Jeftar Mascarenhas (https://jeftar.com.br/)",
   "license": "ISC",

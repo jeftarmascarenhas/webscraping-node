@@ -1,36 +1,59 @@
-import rp from "request-promise";
-import cherio from "cheerio";
-import Table from "cli-table";
+import rp from 'request-promise'
+import cherio from 'cheerio'
+import Table from 'cli-table'
 
-let users = [];
+let users = []
 
 const options = {
-  url: `https://forum.freecodecamp.org/directory_items?period=weekly&order=likes_received&_=1518604435748`,
+  url: `https://www.fundamentus.com.br/detalhes.php?papel=ITSA4`,
   json: true
-};
+}
 
 const prinData = () => {
-  console.log("Ok");
-  console.log("Ok");
-};
+  console.log('Ok')
+  console.log('Ok')
+}
 
 const challegesCompletedPushArray = usersData => {
-  console.log(usersData);
-};
+  console.log(usersData)
+}
 
 rp(options)
-  .then(data => {
-    let userData = [];
-    console.log(data.category_list.categories[1]);
-    // for (let user of data.directory_items) {
-    //   userData.push({
-    //     name: user.user.username,
-    //     likes_received: user.likes_received
-    //   });
-    // }
-    process.stdout.write("loading");
-    // getChallengesCompletedAndPushToUserArray(userData);
+  .then(html => {
+    const $ = cherio.load(html)
+    const names = [
+      'papel',
+      'cotacao',
+      'tipo',
+      'data',
+      'dataCotacao',
+      'empresa',
+      'min',
+      'max',
+      'subsetor',
+      'volume'
+    ]
+    const values = []
+    const tableBody = $('table.w728')
+      .first()
+      .find('tr > td.data > span.txt')
+      .each(function() {
+        values.push(
+          $(this)
+            .text()
+            .trim()
+        )
+      })
+    const data = values
+      .map((info, idx) => ({ [names[idx]]: info }))
+      .reduce((acc, acu) => {
+        let start = { ...acc }
+        let end = acu
+        return { ...start, ...end }
+      })
+    process.stdout.write('loading \n')
+    console.log(data)
   })
   .catch(err => {
-    console.log(err);
-  });
+    console.log(err)
+  })
